@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Isaac's Portfolio</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 40px; }
+    .repo { margin: 10px auto; padding: 10px; border: 1px solid #ddd; max-width: 500px; }
+    a { text-decoration: none; color: #0366d6; }
+  </style>
+</head>
+<body>
+  <h1>Hi, I'm Isaac!</h1>
+  <p>This is a simple portfolio powered by GitHub.</p>
+
+  <h2>My Repositories</h2>
+  <div id="repo-list">Loading...</div>
+
+  <script>
+    const username = "isaac-waffle"; // change to your username
+    const repoList = document.getElementById("repo-list");
+
+    fetch(`https://api.github.com/users/${username}/repos`)
+      .then(res => res.json())
+      .then(repos => {
+        repoList.innerHTML = '';
+        repos.forEach(repo => {
+          const div = document.createElement('div');
+          div.className = 'repo';
+          div.innerHTML = `
+            <a href="${repo.html_url}" target="_blank"><strong>${repo.name}</strong></a><br/>
+            ⭐ ${repo.stargazers_count} | 🛠 ${repo.language || 'Unknown'}
+          `;
+          repoList.appendChild(div);
+        });
+      })
+      .catch(err => {
+        repoList.innerHTML = 'Failed to load repos 😢';
+        console.error(err);
+      });
+  </script>
+</body>
+</html>
